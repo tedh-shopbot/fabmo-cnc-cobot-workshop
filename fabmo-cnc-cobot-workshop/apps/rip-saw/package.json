@@ -1,0 +1,28 @@
+fabmo-cnc-tool-emulators/
+│
+├── server.js               # Entry point for the application
+├── engine.js               # Core engine for managing tool emulation
+├── config/                 # Configuration files
+│   ├── tool-config.js      # Configuration for each tool
+│   └── ...
+├── routes/                 # REST API routes
+│   ├── drillpress.js       # API for DrillPress
+│   ├── ripsaw.js           # API for RipSaw
+│   ├── chopsaw.js          # API for ChopSaw
+│   └── ...
+├── dashboard/              # Web frontend
+│   ├── index.html          # Main dashboard HTML
+│   ├── css/                # Stylesheets
+│   ├── js/                 # JavaScript files
+│   │   ├── fabmo.js        # FabMo API integration
+│   │   ├── drillpress.js    # DrillPress app logic
+│   │   ├── ripsaw.js        # RipSaw app logic
+│   │   ├── chopsaw.js       # ChopSaw app logic
+│   │   └── ...
+│   └── images/             # Images for the dashboard
+├── profiles/               # Tool profiles
+│   ├── drillpress.json     # Profile for DrillPress
+│   ├── ripsaw.json         # Profile for RipSaw
+│   ├── chopsaw.json        # Profile for ChopSaw
+│   └── ...
+└── README.md               # Project documentation
