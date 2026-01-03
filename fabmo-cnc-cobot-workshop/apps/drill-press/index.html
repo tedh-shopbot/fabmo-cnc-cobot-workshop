@@ -1,7 +1,346 @@
-   fabmo-cnc-cobot-workshop/
-   ├── drillpress-app/
-   ├── ripsaw-app/
-   ├── chopsaw-app/
-   ├── shared/
-   ├── README.md
-   └── package.json
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drill Press | CNC Cobot Workshop</title>
+    
+    <!-- Shared Styles -->
+    <link href="../../shared/css/cobot-common.css" rel="stylesheet">
+    
+    <!-- App-Specific Styles -->
+    <link href="css/drill-press.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🔧 Drill Press</h1>
+            <p class="tagline">Precision holes, CNC style</p>
+        </header>
+
+        <!-- Main Work Area -->
+        <div class="work-area">
+            <div class="canvas-container">
+                <canvas id="workpiece-canvas" width="800" height="600"></canvas>
+                <div class="canvas-overlay" id="canvas-info">
+                    <div><strong>Holes:</strong> <span id="hole-count">0</span></div>
+                    <div><strong>Datum:</strong> <span id="datum-status">Not Set</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="controls">
+            <div class="grid grid-2">
+                <!-- Left Column: Hole Configuration -->
+                <section class="card">
+                    <div class="card-header">
+                        <h3>Hole Configuration</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label for="hole-diameter">Diameter (in)</label>
+                            <input 
+                                type="number" 
+                                id="hole-diameter" 
+                                step="0.0625" 
+                                value="0.25" 
+                                min="0.0625"
+                                max="3.0">
+                            <span class="input-hint">Bit diameter (1/16" to 3")</span>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="hole-depth">Depth (in)</label>
+                            <input 
+                                type="number" 
+                                id="hole-depth" 
+                                step="0.0625" 
+                                value="0.5" 
+                                min="0.0625"
+                                max="6.0">
+                            <span class="input-hint">Drilling depth</span>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="hole-type">Hole Type</label>
+                            <select id="hole-type">
+                                <option value="through">Through Hole (Plunge)</option>
+                                <option value="pocket">Pocket (Helical)</option>
+                                <option value="counterbore">Counterbore</option>
+                            </select>
+                        </div>
+
+                        <div id="counterbore-settings" class="hidden">
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="cb-diameter">CB Diameter (in)</label>
+                                    <input 
+                                        type="number" 
+                                        id="cb-diameter" 
+                                        step="0.0625" 
+                                        value="0.5" 
+                                        min="0.0625">
+                                </div>
+                                <div class="input-group">
+                                    <label for="cb-depth">CB Depth (in)</label>
+                                    <input 
+                                        type="number" 
+                                        id="cb-depth" 
+                                        step="0.0625" 
+                                        value="0.125" 
+                                        min="0.0625">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="plunge-rate">Plunge Rate (in/s)</label>
+                            <input 
+                                type="number" 
+                                id="plunge-rate" 
+                                step="0.1" 
+                                value="0.5" 
+                                min="0.1"
+                                max="3.0">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Column: Location Methods -->
+                <section class="card">
+                    <div class="card-header">
+                        <h3>Hole Locations</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tab Navigation -->
+                        <div class="tabs">
+                            <button class="tab active" data-method="single">Single</button>
+                            <button class="tab" data-method="array">Array</button>
+                            <button class="tab" data-method="pattern">Pattern</button>
+                            <button class="tab" data-method="manual">Manual</button>
+                        </div>
+
+                        <!-- Single Hole Method -->
+                        <div id="single-method" class="tab-content active">
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="single-x">X Position (in)</label>
+                                    <input type="number" id="single-x" step="0.125" value="0">
+                                </div>
+                                <div class="input-group">
+                                    <label for="single-y">Y Position (in)</label>
+                                    <input type="number" id="single-y" step="0.125" value="0">
+                                </div>
+                            </div>
+                            <button id="use-current-position" class="btn-accent btn-block">
+                                Use Current Position
+                            </button>
+                            <button id="add-single-hole" class="btn-primary btn-block mt-md">
+                                Add Hole
+                            </button>
+                        </div>
+
+                        <!-- Array Method -->
+                        <div id="array-method" class="tab-content">
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="array-rows">Rows</label>
+                                    <input type="number" id="array-rows" value="3" min="1" max="50">
+                                </div>
+                                <div class="input-group">
+                                    <label for="array-cols">Columns</label>
+                                    <input type="number" id="array-cols" value="3" min="1" max="50">
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="array-spacing-x">X Spacing (in)</label>
+                                    <input type="number" id="array-spacing-x" step="0.125" value="1.0">
+                                </div>
+                                <div class="input-group">
+                                    <label for="array-spacing-y">Y Spacing (in)</label>
+                                    <input type="number" id="array-spacing-y" step="0.125" value="1.0">
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="array-origin-x">Start X (in)</label>
+                                    <input type="number" id="array-origin-x" step="0.125" value="0">
+                                </div>
+                                <div class="input-group">
+                                    <label for="array-origin-y">Start Y (in)</label>
+                                    <input type="number" id="array-origin-y" step="0.125" value="0">
+                                </div>
+                            </div>
+                            <button id="generate-array" class="btn-primary btn-block">
+                                Generate Array
+                            </button>
+                        </div>
+
+                        <!-- Pattern Method -->
+                        <div id="pattern-method" class="tab-content">
+                            <div class="input-group">
+                                <label for="pattern-type">Pattern Type</label>
+                                <select id="pattern-type">
+                                    <option value="circle">Circle</option>
+                                    <option value="arc">Arc</option>
+                                    <option value="line">Line</option>
+                                </select>
+                            </div>
+                            <div id="circle-pattern-settings">
+                                <div class="input-row">
+                                    <div class="input-group">
+                                        <label for="pattern-count">Number of Holes</label>
+                                        <input type="number" id="pattern-count" value="8" min="2" max="100">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="pattern-radius">Radius (in)</label>
+                                        <input type="number" id="pattern-radius" step="0.125" value="2.0">
+                                    </div>
+                                </div>
+                                <div class="input-row">
+                                    <div class="input-group">
+                                        <label for="pattern-center-x">Center X (in)</label>
+                                        <input type="number" id="pattern-center-x" step="0.125" value="0">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="pattern-center-y">Center Y (in)</label>
+                                        <input type="number" id="pattern-center-y" step="0.125" value="0">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label for="pattern-start-angle">Start Angle (degrees)</label>
+                                    <input type="number" id="pattern-start-angle" value="0" min="0" max="360">
+                                </div>
+                            </div>
+                            <button id="generate-pattern" class="btn-primary btn-block">
+                                Generate Pattern
+                            </button>
+                        </div>
+
+                        <!-- Manual Click Method -->
+                        <div id="manual-method" class="tab-content">
+                            <p class="mb-md">Click on the workpiece canvas above to place holes manually.</p>
+                            <div class="alert alert-info">
+                                <span>💡 Click anywhere on the canvas to add a hole at that location.</span>
+                            </div>
+                            <button id="toggle-click-mode" class="btn-secondary btn-block">
+                                Enable Click Mode
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Hole List & Actions -->
+            <section class="card mt-lg">
+                <div class="card-header">
+                    <h3>Hole List (<span id="hole-list-count">0</span> holes)</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Enhanced hole list with editing -->
+                    <div id="hole-list" class="hole-list">
+                        <!-- Generated dynamically with edit/delete for each hole -->
+                        <div class="hole-item" data-hole-index="0">
+                            <span class="hole-icon">🔩</span>
+                            <span class="hole-coords">X: 0.000, Y: 0.000</span>
+                            <span class="hole-type">Through</span>
+                            <div class="hole-actions">
+                                <button class="btn-icon" title="Edit">✏️</button>
+                                <button class="btn-icon" title="Delete">🗑️</button>
+                                <button class="btn-icon" title="Go to">🎯</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="grid grid-2">
+                        <button id="clear-all-holes" class="btn-outline">
+                            Clear All Holes
+                        </button>
+                        <button id="save-hole-list" class="btn-accent">
+                            Save Hole List
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Datum Control -->
+            <section class="card">
+                <div class="card-header">
+                    <h3>Work Datum</h3>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-3">
+                        <button id="set-datum-current" class="btn-accent">
+                            Set from Current
+                        </button>
+                        <button id="set-datum-zero" class="btn-secondary">
+                            Set to 0,0,0
+                        </button>
+                        <button id="clear-datum" class="btn-outline">
+                            Clear Datum
+                        </button>
+                    </div>
+                    <div id="datum-display" class="mt-md hidden">
+                        <div class="status-indicator status-success">
+                            Datum: X=<span id="datum-x">0.000</span>, 
+                            Y=<span id="datum-y">0.000</span>, 
+                            Z=<span id="datum-z">0.000</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="actions mt-lg">
+                <div class="grid grid-3">
+                    <button id="preview-toolpath" class="btn-secondary btn-lg">
+                        📋 Preview Toolpath
+                    </button>
+                    <button id="save-job" class="btn-accent btn-lg">
+                        💾 Save Job
+                    </button>
+                    <button id="drill-now" class="btn-primary btn-action btn-lg">
+                        🔨 Drill Now!
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>CNC Cobot Workshop | Drill Press v1.0.0 | 
+                <a href="#" id="show-settings">Settings</a> | 
+                <a href="#" id="show-help">Help</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modal for Preview -->
+    <div id="preview-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Toolpath Preview</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <pre id="toolpath-preview-content"></pre>
+            </div>
+            <div class="modal-footer">
+                <button id="copy-toolpath" class="btn-secondary">Copy to Clipboard</button>
+                <button id="close-preview" class="btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Scripts -->
+    <script src="../../shared/js/fabmo.js"></script>
+    <script src="../../shared/js/cobot-core.js"></script>
+    <script src="js/drill-toolpath.js"></script>
+    <script src="js/drill-press-ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

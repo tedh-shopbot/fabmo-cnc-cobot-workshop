@@ -1,0 +1,296 @@
+/**
+ * Drill Press - App Specific Styles
+ */
+
+/* ====================================================================
+   Canvas Styling
+   ==================================================================== */
+#workpiece-canvas {
+    width: 100%;
+    height: auto;
+    cursor: crosshair;
+    background: linear-gradient(45deg, #f9f9f9 25%, transparent 25%),
+                linear-gradient(-45deg, #f9f9f9 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #f9f9f9 75%),
+                linear-gradient(-45deg, transparent 75%, #f9f9f9 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    background-color: #ffffff;
+}
+
+#workpiece-canvas.click-mode {
+    cursor: crosshair;
+    border: 2px solid var(--cobot-accent);
+}
+
+#workpiece-canvas.click-mode:hover {
+    border-color: var(--cobot-accent-dark);
+}
+
+.canvas-overlay {
+    background-color: rgba(44, 95, 45, 0.9);
+    color: white;
+    padding: var(--spacing-md);
+    font-size: 0.9rem;
+}
+
+.canvas-overlay div {
+    margin-bottom: var(--spacing-xs);
+}
+
+.canvas-overlay div:last-child {
+    margin-bottom: 0;
+}
+
+/* ====================================================================
+   Hole List
+   ==================================================================== */
+.hole-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+}
+
+.hole-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    background-color: var(--cobot-bg);
+    border: 1px solid var(--cobot-border);
+    border-radius: var(--border-radius);
+    transition: all 0.2s;
+}
+
+.hole-item:hover {
+    background-color: var(--cobot-bg-dark);
+    border-color: var(--cobot-accent);
+    transform: translateX(4px);
+}
+
+.hole-item.selected {
+    background-color: rgba(74, 144, 226, 0.1);
+    border-color: var(--cobot-accent);
+}
+
+.hole-info {
+    flex: 1;
+    display: flex;
+    gap: var(--spacing-md);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+.hole-info span {
+    min-width: 80px;
+}
+
+.hole-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.hole-actions button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.85rem;
+    min-width: auto;
+}
+
+.text-muted {
+    color: var(--cobot-text-light);
+}
+
+/* ====================================================================
+   Datum Display
+   ==================================================================== */
+#datum-display {
+    padding: var(--spacing-md);
+    background-color: var(--cobot-bg);
+    border-radius: var(--border-radius);
+}
+
+#datum-display .status-indicator {
+    width: 100%;
+    justify-content: center;
+    font-family: var(--font-mono);
+}
+
+/* ====================================================================
+   Modal
+   ==================================================================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--cobot-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--cobot-text-light);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background-color: var(--cobot-bg);
+    color: var(--cobot-text);
+}
+
+.modal-body {
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-body pre {
+    background-color: var(--cobot-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.modal-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--cobot-border);
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+}
+
+/* ====================================================================
+   Conditional Settings Display
+   ==================================================================== */
+#counterbore-settings {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--cobot-border);
+}
+
+/* ====================================================================
+   Responsive Design
+   ==================================================================== */
+@media (max-width: 1024px) {
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .canvas-overlay {
+        font-size: 0.8rem;
+        padding: var(--spacing-sm);
+    }
+    
+    .hole-info {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .hole-info span {
+        min-width: auto;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+}
+
+/* ====================================================================
+   Animation for holes appearing
+   ==================================================================== */
+@keyframes holeAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.hole-item {
+    animation: holeAppear 0.2s ease-out;
+}
+
+/* ====================================================================
+   Settings Panel (future enhancement)
+   ==================================================================== */
+.settings-panel {
+    position: fixed;
+    right: -400px;
+    top: 0;
+    width: 400px;
+    height: 100%;
+    background-color: white;
+    box-shadow: var(--shadow-lg);
+    transition: right 0.3s ease-in-out;
+    z-index: 999;
+    overflow-y: auto;
+}
+
+.settings-panel.open {
+    right: 0;
+}
+
+.settings-panel-header {
+    padding: var(--spacing-lg);
+    background-color: var(--cobot-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.settings-panel-body {
+    padding: var(--spacing-lg);
+}

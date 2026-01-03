@@ -1,1 +1,30 @@
-     fabmo-cnc-cobot-workshop-tools/
+{
+  "name": "fabmo-cnc-cobot-workshop",
+  "version": "0.1.0",
+  "description": "CNC Cobot Workshop - Intuitive tool-based mini-apps for CNC operations",
+  "main": "./index.html",
+  "scripts": {
+    "build": "node build.js",
+    "build:drill": "node build.js drill-press",
+    "build:all": "node build.js all",
+    "serve": "python -m http.server 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FabMo/fabmo-cnc-cobot-workshop.git"
+  },
+  "keywords": [
+    "fabmo",
+    "cnc",
+    "cobot",
+    "workshop",
+    "drill-press",
+    "rip-saw",
+    "chop-saw"
+  ],
+  "author": "FabMo",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "archiver": "^5.3.1"
+  }
+}

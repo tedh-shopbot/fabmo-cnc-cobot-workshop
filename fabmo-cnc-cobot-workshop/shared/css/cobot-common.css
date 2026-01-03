@@ -1,0 +1,607 @@
+/**
+ * CNC Cobot Workshop - Common Styles
+ * 
+ * Shared styling for all workshop mini-apps
+ * Design philosophy: Clean, functional, workshop-inspired aesthetics
+ */
+
+/* ====================================================================
+   CSS Variables - Workshop Theme
+   ==================================================================== */
+:root {
+    /* Primary Colors - Industrial/Workshop Inspired */
+    --cobot-primary: #2c5f2d;        /* Workshop green */
+    --cobot-primary-light: #97bc62;   /* Light green accent */
+    --cobot-primary-dark: #1a3d1a;    /* Dark green */
+    
+    --cobot-secondary: #f4a259;       /* Safety orange */
+    --cobot-secondary-light: #ffb77c;
+    --cobot-secondary-dark: #d8793f;
+    
+    --cobot-accent: #4a90e2;          /* Tool blue */
+    --cobot-accent-light: #7fb3f5;
+    --cobot-accent-dark: #2e6bb8;
+    
+    /* Semantic Colors */
+    --cobot-success: #4caf50;
+    --cobot-warning: #ff9800;
+    --cobot-error: #f44336;
+    --cobot-info: #2196f3;
+    
+    /* Neutrals */
+    --cobot-bg: #f5f5f5;
+    --cobot-bg-dark: #e0e0e0;
+    --cobot-surface: #ffffff;
+    --cobot-text: #212121;
+    --cobot-text-light: #757575;
+    --cobot-border: #bdbdbd;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
+    
+    /* Borders & Shadows */
+    --border-radius: 4px;
+    --border-radius-lg: 8px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19);
+}
+
+/* ====================================================================
+   Base Styles
+   ==================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--cobot-text);
+    background-color: var(--cobot-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+
+p {
+    margin-bottom: var(--spacing-md);
+}
+
+/* ====================================================================
+   Layout Components
+   ==================================================================== */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: var(--cobot-surface);
+}
+
+.app-header {
+    background: linear-gradient(135deg, var(--cobot-primary) 0%, var(--cobot-primary-dark) 100%);
+    color: white;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.app-header .tagline {
+    margin: var(--spacing-sm) 0 0 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.work-area {
+    flex: 1;
+    padding: var(--spacing-lg);
+    background-color: var(--cobot-bg);
+    border-bottom: 2px solid var(--cobot-border);
+}
+
+.controls {
+    padding: var(--spacing-lg);
+}
+
+.app-footer {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--cobot-bg-dark);
+    border-top: 1px solid var(--cobot-border);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--cobot-text-light);
+}
+
+/* ====================================================================
+   Form Elements
+   ==================================================================== */
+.input-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+    color: var(--cobot-text);
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"],
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--cobot-border);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    outline: none;
+    border-color: var(--cobot-accent);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.input-group input[type="number"] {
+    font-variant-numeric: tabular-nums;
+}
+
+.input-group .input-hint {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: 0.85rem;
+    color: var(--cobot-text-light);
+}
+
+.input-group.error input,
+.input-group.error select {
+    border-color: var(--cobot-error);
+}
+
+.input-group .error-message {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: 0.85rem;
+    color: var(--cobot-error);
+}
+
+/* Inline Input Groups */
+.input-row {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.input-row .input-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* ====================================================================
+   Buttons
+   ==================================================================== */
+button, .btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    text-decoration: none;
+}
+
+button:disabled, .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: var(--cobot-primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--cobot-primary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background-color: var(--cobot-secondary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--cobot-secondary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Accent Button */
+.btn-accent {
+    background-color: var(--cobot-accent);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-accent:hover:not(:disabled) {
+    background-color: var(--cobot-accent-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Outline Button */
+.btn-outline {
+    background-color: transparent;
+    color: var(--cobot-primary);
+    border: 2px solid var(--cobot-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--cobot-primary);
+    color: white;
+}
+
+/* Action Button (large, prominent) */
+.btn-action {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-height: 48px;
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.85rem;
+}
+
+.btn-lg {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.05rem;
+}
+
+/* Button Block */
+.btn-block {
+    width: 100%;
+    display: flex;
+}
+
+/* ====================================================================
+   Cards & Panels
+   ==================================================================== */
+.card {
+    background-color: var(--cobot-surface);
+    border: 1px solid var(--cobot-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--cobot-bg-dark);
+}
+
+.card-header h3 {
+    margin: 0;
+}
+
+.card-body {
+    /* Content area */
+}
+
+.card-footer {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--cobot-bg-dark);
+}
+
+/* ====================================================================
+   Tabs
+   ==================================================================== */
+.tabs {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--cobot-border);
+}
+
+.tab {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--cobot-text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.tab:hover {
+    color: var(--cobot-text);
+    background-color: var(--cobot-bg);
+}
+
+.tab.active {
+    color: var(--cobot-primary);
+    border-bottom-color: var(--cobot-primary);
+    background-color: transparent;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.2s;
+}
+
+/* ====================================================================
+   Canvas & Visualization
+   ==================================================================== */
+canvas {
+    border: 1px solid var(--cobot-border);
+    border-radius: var(--border-radius);
+    background-color: white;
+    max-width: 100%;
+    height: auto;
+}
+
+.canvas-container {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+}
+
+.canvas-overlay {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ====================================================================
+   Status & Indicators
+   ==================================================================== */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-indicator::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.status-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--cobot-success);
+}
+
+.status-warning {
+    background-color: rgba(255, 152, 0, 0.1);
+    color: var(--cobot-warning);
+}
+
+.status-error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--cobot-error);
+}
+
+.status-info {
+    background-color: rgba(33, 150, 243, 0.1);
+    color: var(--cobot-info);
+}
+
+/* ====================================================================
+   Alerts & Notifications
+   ==================================================================== */
+.alert {
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+}
+
+.alert-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-left: 4px solid var(--cobot-success);
+    color: var(--cobot-success);
+}
+
+.alert-warning {
+    background-color: rgba(255, 152, 0, 0.1);
+    border-left: 4px solid var(--cobot-warning);
+    color: var(--cobot-warning);
+}
+
+.alert-error {
+    background-color: rgba(244, 67, 54, 0.1);
+    border-left: 4px solid var(--cobot-error);
+    color: var(--cobot-error);
+}
+
+.alert-info {
+    background-color: rgba(33, 150, 243, 0.1);
+    border-left: 4px solid var(--cobot-info);
+    color: var(--cobot-info);
+}
+
+/* ====================================================================
+   Grid System
+   ==================================================================== */
+.grid {
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ====================================================================
+   Utility Classes
+   ==================================================================== */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt-0 { margin-top: 0; }
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+.hidden { display: none; }
+.visible { display: block; }
+
+/* ====================================================================
+   Animations
+   ==================================================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-in-out;
+}
+
+/* ====================================================================
+   Responsive Design
+   ==================================================================== */
+@media (max-width: 768px) {
+    .app-header {
+        padding: var(--spacing-md);
+    }
+    
+    .app-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .work-area,
+    .controls {
+        padding: var(--spacing-md);
+    }
+    
+    .input-row {
+        flex-direction: column;
+    }
+    
+    .btn-action {
+        padding: var(--spacing-md);
+        font-size: 1rem;
+    }
+}
+
+/* ====================================================================
+   Print Styles
+   ==================================================================== */
+@media print {
+    .controls,
+    .app-footer,
+    button,
+    .btn {
+        display: none;
+    }
+    
+    .app-container {
+        box-shadow: none;
+    }
+}

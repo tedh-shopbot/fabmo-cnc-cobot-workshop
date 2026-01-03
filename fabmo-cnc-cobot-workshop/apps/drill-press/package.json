@@ -1,7 +1,10 @@
-   fabmo-cnc-cobot-workshop/
-   ├── drillpress-app/
-   ├── ripsaw-app/
-   ├── chopsaw-app/
-   ├── shared/
-   ├── README.md
-   └── package.json
+{
+  "name": "fabmo-drill-press",
+  "version": "1.0.0",
+  "description": "CNC Cobot Workshop - Drill Press Tool",
+  "main": "index.html",
+  "author": "FabMo",
+  "license": "Apache-2.0",
+  "icon": "icon.png",
+  "id": "fabmo-drill-press"
+}

@@ -1,117 +1,56 @@
-### Project Structure
+# FabMo CNC Cobot Workshop
 
-```
-fabmo-cnc-cobot-workshop/
-│
-├── README.md
-├── package.json
-├── package-lock.json
-├── server.js
-├── engine.js
-├── config/
-│   ├── default.json
-│   └── profiles/
-│       ├── drillpress.json
-│       ├── ripsaw.json
-│       └── chopsaw.json
-├── dashboard/
-│   ├── index.html
-│   ├── css/
-│   │   ├── styles.css
-│   ├── js/
-│   │   ├── fabmo.js
-│   │   ├── drillpress.js
-│   │   ├── ripsaw.js
-│   │   └── chopsaw.js
-│   └── images/
-│       ├── drillpress.png
-│       ├── ripsaw.png
-│       └── chopsaw.png
-├── routes/
-│   ├── index.js
-│   ├── drillpress.js
-│   ├── ripsaw.js
-│   └── chopsaw.js
-└── db/
-    ├── jobs.js
-    └── files.js
-```
+A collection of intuitive, tool-based mini-applications for CNC operations that make using a CNC machine as familiar as using traditional workshop tools.
 
-### Step-by-Step Setup
+## 🎯 Project Vision
 
-1. **Initialize the Project**:
-   - Create a new directory for the project and navigate into it.
-   - Run `npm init -y` to create a `package.json` file.
+The CNC Cobot Workshop aims to lower the barrier to entry for CNC machining by providing apps that emulate familiar workshop tools like drill presses, saws, and other common equipment. Rather than requiring users to go through the full CAD/CAM workflow for simple tasks, these apps provide intuitive interfaces that let users quickly perform common operations.
 
-2. **Install Dependencies**:
-   - Install necessary packages such as Express, Socket.IO, and any other dependencies required for the FabMo framework.
-   ```bash
-   npm install express socket.io restify
-   ```
+## 📦 What's Included
 
-3. **Create Configuration Files**:
-   - In the `config/` directory, create a `default.json` file for general settings and individual JSON files for each tool profile (drillpress, ripsaw, chopsaw).
+### Current Apps
 
-4. **Develop the Dashboard**:
-   - In the `dashboard/` directory, create an `index.html` file that serves as the main interface for the applets.
-   - Create CSS files for styling and JavaScript files for each tool's functionality.
-   - Use images to represent each tool visually.
+- **Drill Press** - Drill precise holes, arrays, and patterns
+  - Single holes or arrays
+  - Circular and custom patterns
+  - Through holes, pockets, and counterbores
+  - Interactive visual placement
 
-5. **Implement Tool Functionality**:
-   - In the `js/` directory, create separate JavaScript files for each tool (e.g., `drillpress.js`, `ripsaw.js`, `chopsaw.js`).
-   - Each file should handle the specific logic for the tool, including event listeners, status updates, and job submissions.
+### Planned Apps
 
-6. **Set Up Routes**:
-   - In the `routes/` directory, create route files for each tool that handle API requests and responses.
-   - Implement endpoints for starting jobs, stopping jobs, and retrieving tool status.
+- **Rip Saw** - Make long cuts across sheet materials
+- **Chop Saw** - Crosscuts and miters on long boards
+- **Surfacer** - Surface full tables or material slabs
+- **V-Carve** - Text and decorative carving
+- And more...
 
-7. **Database Integration**:
-   - In the `db/` directory, create files to manage job and file metadata.
-   - Use a simple database like TingoDB or any other suitable database to store job history and file information.
+## 🚀 Getting Started
 
-8. **Server Setup**:
-   - In `server.js`, set up the Express server and configure Socket.IO for real-time communication.
-   - Load the routes and serve the dashboard.
+### For Users
 
-9. **Testing and Debugging**:
-   - Run the application in debug mode to test the functionality of each tool.
-   - Ensure that the dashboard updates correctly based on tool status and user interactions.
+1. Download the `.fma` file for the app you want
+2. Load it into your FabMo system
+3. Open the app and start using it!
 
-10. **Documentation**:
-    - Create a `README.md` file to document the project, including setup instructions, usage, and any other relevant information.
+### For Developers
 
-### Example Code Snippets
+```bash
+# Clone the repository
+git clone https://github.com/FabMo/fabmo-cnc-cobot-workshop.git
+cd fabmo-cnc-cobot-workshop/fabmo-cnc-cobot-workshop
 
-**server.js**:
-```javascript
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const routes = require('./routes/index');
+# Install dependencies
+npm install
 
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+# Build a specific app
+npm run build:drill
 
-app.use(express.static('dashboard'));
-app.use('/api', routes);
+# Build all apps
+npm run build:all
 
-server.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
-});
-```
+# Serve locally for testing
+npm run serve
 
-**drillpress.js**:
-```javascript
-// drillpress.js
-document.addEventListener('DOMContentLoaded', function() {
-    const startButton = document.getElementById('start-drillpress');
-    startButton.addEventListener('click', function() {
-        // Logic to start the drill press job
-        fabmo.submitJob({ /* job details */ });
-    });
-});
-```
 
 ### Conclusion
 
@@ -121,3 +60,69 @@ This project structure and setup will allow you to create a series of mini-appli
 App to give a familiar interface to CNC for common tasks. Make your CNC tool a
 helpful cobot while learning CNC production principles. Use the cobot tools as
 building blocks for fully integrating CNC and robotics into your workflow.
+
+fabmo-cnc-cobot-workshop/
+├── apps/               # Individual mini-apps
+│   ├── drill-press/
+│   ├── rip-saw/
+│   └── chop-saw/
+├── shared/            # Common resources
+│   ├── js/           # Shared JavaScript (cobot-core.js, fabmo.js)
+│   └── css/          # Common styles
+├── build/            # Built .fma files (generated)
+└── docs/             # Documentation
+
+
+🔧 Development
+Creating a New App
+Create a new folder in apps/
+Use the standard structure:
+
+your-app/
+├── index.html
+├── package.json
+├── css/
+│   └── your-app.css
+└── js/
+    ├── main.js
+    ├── ui.js
+    └── toolpath.js
+
+
+Initialize CobotCore in your main.js
+Add to build.js APPS object
+Build with node build.js your-app
+Code Standards
+Use ES6+ JavaScript
+Follow existing naming conventions
+Document all public methods
+Include validation and error handling
+Use the shared CSS variables and classes
+
+📚 Documentation
+Workshop Guide - Complete user guide
+API Reference - FabMo API docs
+OpenSBP Language - Toolpath language reference
+
+🤝 Contributing
+We welcome contributions! Whether it's:
+
+New mini-app ideas
+Bug fixes
+Documentation improvements
+UI/UX enhancements
+Please open an issue or submit a pull request.
+
+📄 License
+Apache License 2.0 - see LICENSE file for details
+
+🔗 Related Projects
+FabMo Engine - Main FabMo server
+FabMo G2-Core - Motion control firmware
+FabMo Apps - Other FabMo applications
+💬 Support
+Documentation: http://www.gofabmo.org
+GitHub Issues: Report a bug
+Community: FabMo Forums
+
+
